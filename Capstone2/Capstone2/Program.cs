@@ -78,8 +78,8 @@ namespace Capstone2
             Console.WriteLine("Here are the tasks:");
             foreach (Task task in taskList)
             {
-                Console.WriteLine("{0,10}{1,10}{2,10}{3,10}{4,10}", "Task Number", "Name", "Description", "Due Date", "Complete");
-                Console.WriteLine("{0,10}{1,10}{2,10}{3,10}{4,10}", index, task.teamMembersName, task.briefDescription, task.dueDate, task.completeFlag);
+                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", "Task Number", "Name", "Description", "Due Date", "Complete");
+                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", index, task.teamMembersName, task.briefDescription, task.dueDate.ToShortDateString(), task.completeFlag);
                 index++;
             }
         }
@@ -118,11 +118,11 @@ namespace Capstone2
                 string input = Console.ReadLine().ToLower();
                 if (input == "y" || input == "yes")
                 {
-                    return true;
+                    return false;
                 }
                 else if (input == "n" || input == "no")
                 {
-                    return false;
+                    return true;
                 }
                 else
                 {
