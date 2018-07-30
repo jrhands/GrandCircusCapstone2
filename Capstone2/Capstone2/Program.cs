@@ -62,7 +62,7 @@ namespace Capstone2
                         DeleteTask(taskList);
                         break;
                     case "4":
-                        MarkTaskComplete();
+                        MarkTaskComplete(taskList);
                         break;
                     case "5":
                         menuFlag = Quit();
@@ -81,7 +81,7 @@ namespace Capstone2
             foreach (Task task in taskList)
             {
                 Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", "Task Number", "Name", "Description", "Due Date", "Complete");
-                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", index, task.teamMembersName, task.briefDescription, task.dueDate.ToShortDateString(), task.completeFlag);
+                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", index + 1, task.teamMembersName, task.briefDescription, task.dueDate.ToShortDateString(), task.completeFlag);
                 index++;
             }
         }
@@ -113,13 +113,13 @@ namespace Capstone2
             {
                 int taskNumber = -1;
                 Console.WriteLine("Enter the number of the task you would like to delete:");
-                while (!int.TryParse(Console.ReadLine(), out taskNumber) || taskNumber < 0 || taskNumber >= taskList.Count())
+                while (!int.TryParse(Console.ReadLine(), out taskNumber) || taskNumber < 1 || taskNumber >= taskList.Count() + 1)
                 {
-                    Console.WriteLine($"Invalid input. Must be an integer between 0 and {taskList.Count()}");
+                    Console.WriteLine($"Invalid input. Must be an integer between 1 and {taskList.Count()}");
                 }
-                Task taskOnChoppingBlock = taskList[taskNumber];
+                Task taskOnChoppingBlock = taskList[taskNumber - 1];
                 Console.WriteLine("Task to be removed:");
-                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", taskNumber, taskOnChoppingBlock.teamMembersName, taskOnChoppingBlock.briefDescription, taskOnChoppingBlock.dueDate, taskOnChoppingBlock.completeFlag);
+                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", taskNumber, taskOnChoppingBlock.teamMembersName, taskOnChoppingBlock.briefDescription, taskOnChoppingBlock.dueDate.ToShortDateString(), taskOnChoppingBlock.completeFlag);
                 Console.Write("Delete this task? (y/n): ");
                 string input = Console.ReadLine().ToLower();
                 while (!Regex.IsMatch(input, "y|yes|n|no"))
@@ -139,9 +139,40 @@ namespace Capstone2
             }
         }
 
-        static void MarkTaskComplete()
+        static void MarkTaskComplete(List<Task> taskList)
         {
-            Console.WriteLine("This will mark a task complete.");
+            int taskNumber;
+            Console.WriteLine("Please enter the number of the task you are marking complete:");
+            while (!int.TryParse(Console.ReadLine(), out taskNumber) || taskNumber < 1 || taskNumber >= taskList.Count() + 1)
+            {
+                Console.WriteLine($"Invalid input. Must be an integer between 1 and {taskList.Count()}");
+            }
+            Task taskToComplete = taskList[taskNumber - 1];
+            if (taskToComplete.completeFlag)
+            {
+                Console.WriteLine("This task is already complete!");
+            }
+            else
+            {
+                Console.WriteLine("Task to be completed:");
+                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", taskNumber, taskToComplete.teamMembersName, taskToComplete.briefDescription, taskToComplete.dueDate.ToShortDateString(), taskToComplete.completeFlag);
+                Console.Write("Mark this task as complete? (y/n): ");
+                string input = Console.ReadLine().ToLower();
+                while (!Regex.IsMatch(input, "y|yes|n|no"))
+                {
+                    Console.WriteLine("Invalid input. Please choose yes or no.");
+                    input = Console.ReadLine().ToLower();
+                }
+                if (input == "y" || input == "yes")
+                {
+                    taskList[taskNumber - 1].completeFlag = true;
+                    Console.WriteLine("Task marked as complete. Returning to main menu.");
+                }
+                else
+                {
+                    Console.WriteLine("Returning to main menu.");
+                }
+            }
         }
 
         static bool Quit()
