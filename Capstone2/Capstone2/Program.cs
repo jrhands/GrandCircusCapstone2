@@ -18,7 +18,7 @@ namespace Capstone2
         static void RandomStartMessage()
         {
             Random random = new Random();
-            int startMessageRandomizer = random.Next(0, 4);
+            int startMessageRandomizer = random.Next(0, 6);
             switch (startMessageRandomizer)
             {
                 case 0:
@@ -32,6 +32,12 @@ namespace Capstone2
                     break;
                 case 3:
                     Console.WriteLine("Feel the Rhythm! Feel the Rhyme! Get on up, it's bobsled time! Cool Runnings!");
+                    break;
+                case 4:
+                    Console.WriteLine("You are tearing me apart, Lisa!");
+                    break;
+                case 5:
+                    Console.WriteLine("Badder than ol' King Kong. Meaner than a junkyard dog.");
                     break;
                 default:
                     Console.WriteLine("Jacob messed up the range on his start message randomizer. PM him on Slack about it and call him stinky.");
