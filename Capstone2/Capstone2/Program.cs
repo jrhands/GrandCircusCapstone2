@@ -1,6 +1,8 @@
 ﻿using Capstone2.Library;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Capstone2
 {
@@ -57,7 +59,7 @@ namespace Capstone2
                         AddTask(taskList);
                         break;
                     case "3":
-                        DeleteTask();
+                        DeleteTask(taskList);
                         break;
                     case "4":
                         MarkTaskComplete();
@@ -98,11 +100,43 @@ namespace Capstone2
                 Console.WriteLine("Invalid input. Please enter a valid date:");
             }
             taskList.Add(new Task(teamMembersName, briefDescription, dueDate));
+            Console.WriteLine("Added!");
         }
 
-        static void DeleteTask()
+        static void DeleteTask(List<Task> taskList)
         {
-            Console.WriteLine("This will delete a task from the list.");
+            if (taskList.Count() == 0)
+            {
+                Console.WriteLine("List is empty! There's nothing to delete!");
+            }
+            else
+            {
+                int taskNumber = -1;
+                Console.WriteLine("Enter the number of the task you would like to delete:");
+                while (!int.TryParse(Console.ReadLine(), out taskNumber) || taskNumber < 0 || taskNumber >= taskList.Count())
+                {
+                    Console.WriteLine($"Invalid input. Must be an integer between 0 and {taskList.Count()}");
+                }
+                Task taskOnChoppingBlock = taskList[taskNumber];
+                Console.WriteLine("Task to be removed:");
+                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", taskNumber, taskOnChoppingBlock.teamMembersName, taskOnChoppingBlock.briefDescription, taskOnChoppingBlock.dueDate, taskOnChoppingBlock.completeFlag);
+                Console.Write("Delete this task? (y/n): ");
+                string input = Console.ReadLine().ToLower();
+                while (!Regex.IsMatch(input, "y|yes|n|no"))
+                {
+                    Console.WriteLine("Invalid input. Please choose yes or no.");
+                    input = Console.ReadLine().ToLower();
+                }
+                if (input == "y" || input == "yes")
+                {
+                    taskList.Remove(taskOnChoppingBlock);
+                    Console.WriteLine("Task removed. Returning to main menu.");
+                }
+                else
+                {
+                    Console.WriteLine("Returning to main menu.");
+                }
+            }
         }
 
         static void MarkTaskComplete()
