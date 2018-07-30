@@ -18,7 +18,7 @@ namespace Capstone2
         static void RandomStartMessage()
         {
             Random random = new Random();
-            int startMessageRandomizer = random.Next(0, 3);
+            int startMessageRandomizer = random.Next(0, 4);
             switch (startMessageRandomizer)
             {
                 case 0:
@@ -29,6 +29,9 @@ namespace Capstone2
                     break;
                 case 2:
                     Console.WriteLine("Don't worry, aerobics aren't on the list. Probably.");
+                    break;
+                case 3:
+                    Console.WriteLine("Feel the Rhythm! Feel the Rhyme! Get on up, it's bobsled time! Cool Runnings!");
                     break;
                 default:
                     Console.WriteLine("Jacob messed up the range on his start message randomizer. PM him on Slack about it and call him stinky.");
@@ -78,9 +81,9 @@ namespace Capstone2
         {
             int index = 0;
             Console.WriteLine("Here are the tasks:");
+            Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", "Task Number", "Name", "Description", "Due Date", "Complete");
             foreach (Task task in taskList)
             {
-                Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", "Task Number", "Name", "Description", "Due Date", "Complete");
                 Console.WriteLine("{0,15}{1,15}{2,20}{3,15}{4,15}", index + 1, task.teamMembersName, task.briefDescription, task.dueDate.ToShortDateString(), task.completeFlag);
                 index++;
             }
