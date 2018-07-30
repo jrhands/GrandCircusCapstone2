@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Capstone2.Library;
+using System;
+using System.Collections.Generic;
 
 namespace Capstone2
 {
@@ -35,6 +37,7 @@ namespace Capstone2
         static void MainMenu()
         {
             bool menuFlag = true;
+            List<Task> taskList = new List<Task>();
             string input;
             do
             {
@@ -48,10 +51,10 @@ namespace Capstone2
                 switch (input)
                 {
                     case "1":
-                        ListTasks();
+                        ListTasks(taskList);
                         break;
                     case "2":
-                        AddTask();
+                        AddTask(taskList);
                         break;
                     case "3":
                         DeleteTask();
@@ -60,7 +63,7 @@ namespace Capstone2
                         MarkTaskComplete();
                         break;
                     case "5":
-                        Quit();
+                        menuFlag = Quit();
                         break;
                     default:
                         Console.WriteLine("Invalid input.");
@@ -69,14 +72,32 @@ namespace Capstone2
             } while (menuFlag);
         }
 
-        static void ListTasks()
+        static void ListTasks(List<Task> taskList)
         {
-            Console.WriteLine("This will list tasks.");
+            int index = 0;
+            Console.WriteLine("Here are the tasks:");
+            foreach (Task task in taskList)
+            {
+                Console.WriteLine("{0,10}{1,10}{2,10}{3,10}{4,10}", "Task Number", "Name", "Description", "Due Date", "Complete");
+                Console.WriteLine("{0,10}{1,10}{2,10}{3,10}{4,10}", index, task.teamMembersName, task.briefDescription, task.dueDate, task.completeFlag);
+                index++;
+            }
         }
 
-        static void AddTask()
+        static void AddTask(List<Task> taskList)
         {
-            Console.WriteLine("This will add a task to the list.");
+            Console.WriteLine("Please enter the data about the task you would like to add.");
+            Console.WriteLine("Name:");
+            string teamMembersName = Console.ReadLine();
+            Console.WriteLine("Description:");
+            string briefDescription = Console.ReadLine();
+            Console.WriteLine("Due date:");
+            DateTime dueDate = new DateTime();
+            while (!DateTime.TryParse(Console.ReadLine(), out dueDate))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid date:");
+            }
+            taskList.Add(new Task(teamMembersName, briefDescription, dueDate));
         }
 
         static void DeleteTask()
@@ -89,9 +110,25 @@ namespace Capstone2
             Console.WriteLine("This will mark a task complete.");
         }
 
-        static void Quit()
+        static bool Quit()
         {
-            Console.WriteLine("This will quit out of the program.");
+            while (true)
+            {
+                Console.Write("Would you like to quit? (y/n): ");
+                string input = Console.ReadLine().ToLower();
+                if (input == "y" || input == "yes")
+                {
+                    return true;
+                }
+                else if (input == "n" || input == "no")
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+            }
         }
     }
 }
